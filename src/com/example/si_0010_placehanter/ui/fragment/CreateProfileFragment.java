@@ -186,10 +186,16 @@ public class CreateProfileFragment extends Fragment implements OnClickListener,O
 		
 		sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
 		
-		SharedPreferences.Editor editor=sharedPreferences.edit();
-		editor.putBoolean(PREF_PARSE_PROF_EXIST, true);
-		editor.putString(PREF_PARSE_PROF_LOGIN,"Пахом");
-		editor.commit();
+		
+		boolean unexpectedData=sharedPreferences.getBoolean(PREF_PARSE_PROF_EXIST, false);
+		if (!unexpectedData) {
+			SharedPreferences.Editor editor=sharedPreferences.edit();
+			editor.putBoolean(PREF_PARSE_PROF_EXIST, true);
+			editor.putString(PREF_PARSE_PROF_LOGIN,"Пахом");
+			editor.commit();	
+		}
+		
+		
 		
 		Log.d(LOG_TAG, "PREF_PARSE_PROF_LOGIN: "+sharedPreferences.getString(PREF_PARSE_PROF_LOGIN, null));
 		
@@ -490,6 +496,8 @@ public class CreateProfileFragment extends Fragment implements OnClickListener,O
 					country=edProfCountry.getText().toString();
 					hobbies=edProfHobbies.getText().toString();
 				
+					
+					
 					parseDataBaseManager.addProfile(login, password, progActivity, progNature,
 							progLust, progImpr, country, hobbies, imgFile);
 				} catch (Exception e) {
